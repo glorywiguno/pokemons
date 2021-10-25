@@ -1,7 +1,8 @@
-import React from 'react';
 import styled from '@emotion/styled';
 
 /**
+ * TypeBadge
+ * styled component for displaying pokemons type
  * colors for the type are taken from https://bulbapedia.bulbagarden.net/wiki/Type#Icons
  */
 const TypeBadge = styled.span`

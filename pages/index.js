@@ -3,22 +3,29 @@ import Head from 'next/head';
 import axios from 'axios';
 import { Grid } from '@mui/material';
 
-import PokemonProvider, { DataContext } from '../providers/PokemonProvider';
 import PokemonTile from '../components/PokemonTile';
 import DetailPopup from '../components/DetailPopup';
 import SearchBar from '../components/SearchBar';
 import style from '../styles/Home.module.css';
 
+// mock list of pokemons, might had hit the api limit by mistake
+// since getStaticProps might triggered on every page request, especially in
+// development server. This would try to make around 50 request/run
 import { pokemonList as mockList} from '../mock/pokemonlist';
 
 export async function getStaticProps(context) {
   const reqs = [];
   const nameList = [];
 
+  // queue up requests for pokemon data
   for (let i = 1; i <= 50; i++) {
     reqs.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${i}/`));
   }
 
+  // get the initial data for the pokemons, previously used https://pokeapi.co/api/v2/pokemon/
+  // endpoint but it only returns pokemon name and the resource url,
+  // need listing on pokemon name, and the types. In this case graphql
+  // might be good to use
   const initialData = await Promise.all(reqs)
     .then(res => {
       return res.map((item, i) => {
@@ -39,32 +46,6 @@ export async function getStaticProps(context) {
       })
     });
 
-  /*
-  const rawData = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=50`)
-    .then((res) => {
-      const { results } = res.data;
-      const initialData = results.map((item, i) => {
-        const regexMatch = item.url.match(/https:\/\/pokeapi.co\/api\/v2\/pokemon\/(\d+)\//);
-        let pokemonId = undefined;
-
-        if (regexMatch.length > 1) {
-          pokemonId = regexMatch[1];
-        }
-
-
-        return {
-          url: item.url,
-          id: pokemonId,
-          name: item.name,
-          // types: pokemonTypes,
-          image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`,
-        }
-      });
-
-      return initialData;
-  });
-  */
-
   return {
     props: {
       data: initialData
@@ -72,8 +53,15 @@ export async function getStaticProps(context) {
   }
 }
 
+/**
+ * Home pagej component
+ * @param {*} props
+ * @returns
+ */
 export default function Home(props) {
   const [pokemonList, setPokemonList] = React.useState(props.data);
+  // default pokemon list from the initial data, intended to use this as
+  // fallback if there's no search term
   const [defaultPokemonList, setDefaultPokemonList] = React.useState(props.data);
   const [isPopupOpen, setPopupOpen] =  React.useState(false);
   const [selectedPokemon, setSelectedPokemon] = React.useState(null);
@@ -110,8 +98,6 @@ export default function Home(props) {
         data={selectedPokemon}
       />
 
-      <footer>
-      </footer>
     </div>
   )
 }

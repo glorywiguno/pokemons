@@ -9,6 +9,16 @@ import { padLeftWithZero } from '../commons/utils.js';
 import TypeBadge from './TypeBadge';
 
 
+/**
+ * StyledBar
+ * extension of LinearProgress used to show status point for
+ * Pokemon Status
+ *
+ * just a note, the max base stats for a pokemon is 255
+ * refer to https://bulbapedia.bulbagarden.net/wiki/Base_stats#:~:text=A%20species%27%20base%20stats%20range,Pok%C3%A9mon%20species%20has%20in%20battle.
+ * @param {*} props
+ * @returns
+ */
 const StyledBar = (props) => (
   <LinearProgress
     sx={{
@@ -19,7 +29,13 @@ const StyledBar = (props) => (
   />
 );
 
-// max base stat for pokemon is 255
+/**
+ * DetailPopup
+ * Popup/modal component to show detailed information about a pokemon
+ *
+ * @param {*} props
+ * @returns
+ */
 const DetailPopup = (props) => {
   const { isOpen, closeHandler, data } = props;
   const [pokemonData, setPokemonData] = React.useState(null);
@@ -31,6 +47,7 @@ const DetailPopup = (props) => {
     }
   }, [data]);
 
+  //
   const getPokemonData = async (id) => {
     const fetchedData = await Promise.all([
         axios.get(`https://pokeapi.co/api/v2/pokemon/${data}/`),
@@ -49,6 +66,7 @@ const DetailPopup = (props) => {
         } = basicDataRes.data;
         const { flavor_text_entries } = speciesDataRes.data;
 
+        // gather the results from the endpoints to get the needed data
         const filteredData = {
           id: id,
           name: name,
@@ -58,6 +76,7 @@ const DetailPopup = (props) => {
           stats: stats.map(item => {
             let statName = item.stat.name;
 
+            // to shorten some status name
             switch (item.stat.name) {
               case 'special-attack':
                 statName = 'sp-atk'
@@ -79,6 +98,7 @@ const DetailPopup = (props) => {
           flavor_text: flavor_text_entries.length > 0 ? flavor_text_entries[0].flavor_text : ''
         };
 
+        // set the state
         setPokemonData(filteredData);
 
         return filteredData;
@@ -87,6 +107,7 @@ const DetailPopup = (props) => {
     return fetchedData;
   }
 
+  // function for popup handling close
   const handleClose = (e) => {
     setPokemonData(null);
     closeHandler(e);
@@ -234,7 +255,9 @@ const DetailPopup = (props) => {
                     .pokemon-id {
                       opacity: 0.6;
                     }
-                    .pokemon-name, pokemon-id {
+
+                    .pokemon-name,
+                    .pokemon-id {
                       position: relative;
                     }
 
@@ -366,7 +389,6 @@ const DetailPopup = (props) => {
           : (
             <div style={{display: 'block', width: '100%', height: '100%'}}><CircularProgress /></div>
         )}
-
 
       </Paper>
     </Modal>

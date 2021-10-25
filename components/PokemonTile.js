@@ -6,6 +6,13 @@ import { css, jsx } from '@emotion/react';
 import { padLeftWithZero } from '../commons/utils.js';
 import TypeBadge from './TypeBadge';
 
+/**
+ * PokemonTile
+ * Small card component to display short pokemon info in the listing view
+ *
+ * @param {*} props
+ * @returns
+ */
 const PokemonTile = (props) => {
   const { data, clickHandler } = props;
   const tileBreakpoint = 360;
@@ -69,10 +76,7 @@ const PokemonTile = (props) => {
           }
         `}
       >
-        <img
-          src={data.image}
-          draggable="false"
-        />
+        <img src={data.image} draggable="false" />
       </figure>
       <div
         css={css`
