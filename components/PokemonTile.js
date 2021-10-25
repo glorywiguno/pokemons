@@ -10,12 +10,24 @@ const PokemonTile = (props) => {
   const { data, clickHandler } = props;
   const tileBreakpoint = 360;
 
+  // React.useEffect(() => {
+
+  // }, []);
+
+  // const getPokemonType = async (id) => {
+  //   const typesData = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}/`)
+  // }
+
   return (
     <Paper
+      component="a"
       css={css`
+        display: block;
         position: relative;
         overflow: hidden;
         transition: all 0.3s ease-out;
+        text-decoration: none;
+        cursor: pointer;
 
         &:hover,
         &:focus {
@@ -100,7 +112,7 @@ const PokemonTile = (props) => {
             margin-right: 0.6rem
            }
         `}>
-          {data.types.map((type, idx) => {
+          {data.types && data.types.map((type, idx) => {
             return (
               <TypeBadge pokemonType={type} key={idx}>{type}</TypeBadge>
             );

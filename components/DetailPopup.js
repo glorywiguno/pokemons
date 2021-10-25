@@ -33,8 +33,8 @@ const DetailPopup = (props) => {
 
   const getPokemonData = async (id) => {
     const fetchedData = await Promise.all([
-        axios.get(`https://pokeapi.co/api/v2/pokemon/${data}/`),
-        axios.get(`https://pokeapi.co/api/v2/pokemon-species/${data}/`)
+        axios.get(`https://pokeapi.com/api/v2/pokemon/${data}/`),
+        axios.get(`https://pokeapi.com/api/v2/pokemon-species/${data}/`)
       ])
       .then(res => {
         const [basicDataRes, speciesDataRes] = res;
@@ -138,7 +138,7 @@ const DetailPopup = (props) => {
           }
         `}
       >
-        {pokemonData != null 
+        {pokemonData != null
           ? (
             <>
               <img

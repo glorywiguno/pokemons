@@ -1,19 +1,19 @@
 import React from 'react';
 import Head from 'next/head';
-import Image from 'next/image';
 import axios from 'axios';
 import { Grid } from '@mui/material';
 
 import PokemonProvider, { DataContext } from '../providers/PokemonProvider';
 import PokemonTile from '../components/PokemonTile';
 import DetailPopup from '../components/DetailPopup';
+import SearchBar from '../components/SearchBar';
 import style from '../styles/Home.module.css';
 
 import { pokemonList as mockList} from '../mock/pokemonlist';
 
 export async function getStaticProps(context) {
-  /*
   const reqs = [];
+  const nameList = [];
 
   for (let i = 1; i <= 50; i++) {
     reqs.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${i}/`));
@@ -23,17 +23,21 @@ export async function getStaticProps(context) {
     .then(res => {
       return res.map((item, i) => {
         const { data } = item;
-        console.log('trying to get data for id ' + data.id);
+
+        nameList.push({
+          name: data.name,
+          url: `https://pokeapi.co/api/v2/pokemon/${data.id}/`,
+        });
+
         return {
-          url: `https://pokeapi.com/api/v2/pokemon/${data.id}/`,
+          url: `https://pokeapi.co/api/v2/pokemon/${data.id}/`,
           id: data.id,
           name: data.name,
           types: data.types.map(typeObject => typeObject.type.name),
           image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`,
         }
       })
-    })*/
-  
+    });
 
   /*
   const rawData = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=50`)
@@ -63,8 +67,7 @@ export async function getStaticProps(context) {
 
   return {
     props: {
-      // data: initialData
-      ...mockList
+      data: initialData
     }
   }
 }
@@ -83,27 +86,23 @@ export default function Home(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      {/* <SearchBar /> */}
       <main className="content-wrapper">
-        <section>
-          <h1>Pokemons!</h1>
-        </section>
-        <section className={''}>
-          <Grid container spacing={1.4}>
-            {pokemonList.map((item, index) => {
-              return (
-                <Grid item xs={12} sm={6} md={4} key={index}>
-                  <PokemonTile
-                    data={item}
-                    clickHandler={(e) => {
-                      setSelectedPokemon(e.__payload);
-                      setPopupOpen(true);
-                    }}
-                  />
-                </Grid>
-              );
-            })}
-          </Grid>
-        </section>
+        <Grid container spacing={1.4}>
+          {pokemonList.map((item, index) => {
+            return (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <PokemonTile
+                  data={item}
+                  clickHandler={(e) => {
+                    setSelectedPokemon(e.__payload);
+                    setPopupOpen(true);
+                  }}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
       </main>
       <DetailPopup
         isOpen={isPopupOpen}
