@@ -2,8 +2,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 62.5%;
+  overflow: auto;
 }
 
 a {
@@ -13,4 +13,12 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.content-wrapper {
+  padding-left: 6.5%;
+  padding-right: 6.5%;
+  max-width: 120rem;
+  margin-left: auto;
+  margin-right: auto;
 }
